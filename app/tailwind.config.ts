@@ -7,50 +7,17 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '8xl': '1920px',
+      },
+    },
   },
   darkMode: ['class', '[data-theme="dark"]'],
   plugins: [require('daisyui')],
   daisyui: {
-    // themes: ['light', 'dark'],
+    theme: ['dark'],
     themes: [
-      {
-        light: {
-          ...require('daisyui/src/theming/themes')['[data-theme=light]'],
-
-          primary: '#6E0B75',
-          'primary-focus': '#4F0854',
-          'primary-content': '#E3CEE2',
-
-          secondary: '#007EBD',
-          'secondary-focus': '#006699',
-          'secondary-content': '#D8E5F3',
-
-          accent: '#F8860D',
-          'accent-focus': '#DA7407',
-          'accent-content': '#301D0D',
-
-          neutral: '#1F2937',
-          'neutral-focus': '#121821',
-          'neutral-content': '#CED0D4',
-          'base-100': '#FFFFFF',
-          'base-200': '#EDEDED',
-          'base-300': '#DBDBDB',
-          'base-content': '#1F2937',
-
-          info: '#3ABFF8',
-          'info-content': '#002B3D',
-
-          success: '#36D399',
-          'success-content': '#003320',
-
-          warning: '#FBBD23',
-          'warning-content': '#003320',
-
-          error: '#F87272',
-          'error-content': '#470000',
-        },
-      },
       {
         dark: {
           ...require('daisyui/src/theming/themes')['[data-theme=dark]'],
@@ -70,20 +37,20 @@ const config: Config = {
           'neutral-focus': '#242b33',
           'neutral-content': '#A6ADBB',
           'base-100': '#222831',
-          'base-200': '#191e24',
+          'base-200': '#212730',
           'base-300': '#15191e',
-          'base-content': '#A6ADBB',
+          'base-content': '#ffffff',
 
           info: '#3ABFF8',
           'info-content': '#002B3D',
 
-          success: '#36D399',
+          success: '#418E60',
           'success-content': '#003320',
 
           warning: '#FBBD23',
           'warning-content': '#003320',
 
-          error: '#F87272',
+          error: '#8E4141',
           'error-content': '#470000',
         },
       },
