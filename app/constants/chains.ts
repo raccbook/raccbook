@@ -7,7 +7,7 @@ const chainConfig = {
   mainnet: [sepolia, mainnet],
 }
 
-export const CHAINS =
+export const chains =
   chainConfig[
     (process.env.NEXT_PUBLIC_CHAIN_ENVIROMENT as enviroment) || 'localhost'
   ]

@@ -1,5 +1,5 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react'
-import { CHAINS } from './chains'
+import { chains } from './chains'
 
 export const projectId = '1781ae0f89ad163eedbfb2ca5aac691d'
 
@@ -11,4 +11,4 @@ const metadata = {
 }
 
 export const wagmiConfig =
-  defaultWagmiConfig({ chains: CHAINS, projectId, metadata })
+  defaultWagmiConfig({ chains, projectId, metadata })

@@ -4,11 +4,11 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
-import { CHAINS } from "@/constants/chains";
+import { chains } from "@/constants/chains";
 import { WagmiConfig } from "wagmi";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  createWeb3Modal({ wagmiConfig, projectId, chains: CHAINS });
+  createWeb3Modal({ wagmiConfig, projectId, chains });
 
   return (
     <>
