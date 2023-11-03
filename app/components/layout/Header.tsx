@@ -9,6 +9,7 @@ const Header: FC = () => {
         <Link href={"/"}>
           <Image src="/logo.svg" alt="header-logo" width="40" height="40" />
         </Link>
+        <w3m-button />
       </nav>
     </header>
   );

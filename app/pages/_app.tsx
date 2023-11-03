@@ -1,9 +1,15 @@
-// import Layout from "@/components/layout";
+import Layout from "@/components/layout";
+import { wagmiConfig, projectId } from "@/constants/config";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { CHAINS } from "@/constants/chains";
+import { WagmiConfig } from "wagmi";
 
 const App = ({ Component, pageProps }: AppProps) => {
+  createWeb3Modal({ wagmiConfig, projectId, chains: CHAINS });
+
   return (
     <>
       <Head>
@@ -27,9 +33,11 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta property="og:title" content="" />
         <meta property="og:description" content="" />
       </Head>
-      {/* <Layout> */}
-        <Component {...pageProps} />
-      {/* </Layout> */}
+      <WagmiConfig config={wagmiConfig}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </WagmiConfig>
     </>
   );
 };
