@@ -13,4 +13,7 @@ interface IErrors {
     error InsufficentTokenAllowance();
     error InsufficentTokenBalance();
     error NoLiquidationPossible();
+    error InsufficentRepaymentAmount();
+    error LoanDoesNotExist();
+    error OnlyLoanBorrowerCanRepay();
 }

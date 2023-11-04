@@ -258,8 +258,55 @@ contract Orderbook is IOrders, IErrors {
         deposits[msg.sender][_token] += _amount;
     }
 
-    // TODO:
-    function repay() public {}
+    function repay(uint256 _id) public {
+        Loan memory loan = loans[msg.sender][_id];
+
+        if (loan.id != _id) revert LoanDoesNotExist();
+
+        if (loan.borrower != msg.sender) revert OnlyLoanBorrowerCanRepay();
+
+        IERC20 token = IERC20(loan.token);
+
+        if (token.balanceOf(msg.sender) < loan.amount + loan.repaymentAmount)
+            revert InsufficentRepaymentAmount();
+
+        bool isTransferred = token.transfer(
+            address(this),
+            loan.amount + loan.repaymentAmount
+        );
+
+        if (!isTransferred) revert TransferFailed();
+
+        delete loans[msg.sender][_id];
+        delete loans[loan.lender][_id];
+
+        deposits[msg.sender][loan.token] +=
+            ((loan.amount * 100) / LTV) -
+            loan.repaymentAmount;
+        deposits[loan.lender][loan.token] += loan.amount + loan.repaymentAmount;
+
+        uint[] storage borrowerLoanIds = loanIds[msg.sender];
+
+        for (uint256 i = 0; i < borrowerLoanIds.length; i++) {
+            if (borrowerLoanIds[i] == _id) {
+                borrowerLoanIds[i] = borrowerLoanIds[
+                    borrowerLoanIds.length - 1
+                ];
+                borrowerLoanIds.pop();
+                break;
+            }
+        }
+
+        uint[] storage lenderLoanIds = loanIds[loan.lender];
+
+        for (uint256 i = 0; i < lenderLoanIds.length; i++) {
+            if (lenderLoanIds[i] == _id) {
+                lenderLoanIds[i] = lenderLoanIds[lenderLoanIds.length - 1];
+                lenderLoanIds.pop();
+                break;
+            }
+        }
+    }
 
     function liquidate(
         address _token,
