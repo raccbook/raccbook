@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      opacity: {
+        2: '0.02',
+        4: '0.04',
+        12: '0.12',
+      },
       maxWidth: {
         '8xl': '1920px',
       },
