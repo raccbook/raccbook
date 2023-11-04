@@ -7,12 +7,13 @@ import { useReads } from "@/hooks/useReads";
 import { useAccount, useContractWrite } from "wagmi";
 import { TOKEN } from "@/constants";
 import { parseEther } from "viem";
+import { iModes, iTypes } from "@/types";
 
 const Panel: FC = () => {
   const { address } = useAccount();
 
-  const [mode, setMode] = useState<"borrow" | "lend">("borrow");
-  const [type, setType] = useState<"limit" | "market">("market");
+  const [mode, setMode] = useState<iModes>("borrow");
+  const [type, setType] = useState<iTypes>("market");
   const [rate, setRate] = useState<number>(0);
   const [inputAmount, setInputAmount] = useState<number>(0);
 

@@ -1,10 +1,11 @@
+import { iTypes } from '@/types'
 import { FC } from 'react'
 
 interface Props {
-  type: 'limit' | 'market'
+  type: iTypes
   inputAmount: number
   rate: number
-  setType: (type: 'limit' | 'market') => void
+  setType: (type: iTypes) => void
   handleInputAmount: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleRate: (e: React.ChangeEvent<HTMLInputElement>) => void
 }

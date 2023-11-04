@@ -1,8 +1,9 @@
+import { iModes } from '@/types'
 import { FC } from 'react'
 
 interface Props {
-  mode: 'borrow' | 'lend'
-  setMode: (mode: 'borrow' | 'lend') => void
+  mode: iModes
+  setMode: (mode: iModes) => void
 }
 
 const Mode: FC<Props> = ({ mode, setMode }) => {
