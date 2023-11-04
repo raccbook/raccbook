@@ -45,7 +45,7 @@ const processRequest = async (query) => {
   try {
     // GET USER ID FROM PROTECTED DATA
     const iexecIn = process.env.IEXEC_IN;
-    // const id = extractId(`${iexecIn}/protectedData.zip`);
+    // const id_ = extractId(`${iexecIn}/protectedData.zip`);
     const id = "10"
     // GET USER FROM TALENTLAYER ID
     const userData = await getUserById(id);
