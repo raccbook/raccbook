@@ -1,5 +1,5 @@
 import { capitalizeFirst } from "@/utils/format";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import InputParams from "./InputParams";
 import Mode from "./Mode";
 import { usePrepareWrite } from "@/hooks/usePrepareWrite";
@@ -8,6 +8,10 @@ import { useAccount, useContractWrite } from "wagmi";
 import { TOKEN } from "@/constants";
 import { parseEther } from "viem";
 import { iModes, iTypes } from "@/types";
+import Meta from "./Meta";
+import { Bid, Ask } from "@/types/orders";
+import { durationState } from "@/redux/meta";
+import { useSelector } from "react-redux";
 
 const Panel: FC = () => {
   const { address } = useAccount();
@@ -17,7 +21,11 @@ const Panel: FC = () => {
   const [rate, setRate] = useState<number>(0);
   const [inputAmount, setInputAmount] = useState<number>(0);
 
-  const period = 1;
+  const [available, setAvailable] = useState<number>(0);
+  const [userOpenBids, setUserOpenBids] = useState<Bid[]>([]);
+  const [userOpenAsks, setUserOpenAsks] = useState<Ask[]>([]);
+
+  const period = useSelector(durationState)
 
   const handleInputAmount = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputAmount(Number(e.target.value));
@@ -100,6 +108,41 @@ const Panel: FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!address) {
+      setAvailable(0);
+      setUserOpenBids([]);
+      setUserOpenAsks([]);
+      return;
+    }
+
+    const deposits = data?.[0].result as BigInt | undefined;
+    const bids = data?.[1].result as Bid[];
+    const asks = data?.[2].result as Ask[];
+
+    if (deposits) setAvailable(Number(deposits) / 10 ** 18);
+
+    const userOpenBid: Bid[] = [];
+    const userOpenAsk: Ask[] = [];
+
+    if (bids)
+      bids.forEach((element: Bid) => {
+        if (element.borrower === address) {
+          userOpenBid.push(element);
+        }
+      });
+
+    if (asks)
+      asks.forEach((element: Ask) => {
+        if (element.lender === address) {
+          userOpenAsk.push(element);
+        }
+      });
+
+    setUserOpenBids(userOpenBid);
+    setUserOpenAsks(userOpenAsk);
+  }, [address, data]);
+
   return (
     <div className="col-span-1 flex flex-col gap-3">
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
@@ -120,6 +163,12 @@ const Panel: FC = () => {
         >
           {capitalizeFirst(mode)}
         </button>
+        <Meta
+          available={available}
+          userOpenBids={userOpenBids}
+          userOpenAsks={userOpenAsks}
+          period={period}
+        />
       </div>
     </div>
   );
