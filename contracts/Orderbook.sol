@@ -1,48 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "./interfaces/IChronicle.sol";
+import "./interfaces/IErrors.sol";
+import "./interfaces/IOrders.sol";
+
 pragma solidity ^0.8.20;
 
-contract Orderbook {
+contract Orderbook is IOrders, IErrors {
     uint256 LTV = 85;
 
-    struct Ask {
-        uint256 id;
-        address lender;
-        uint256 amount;
-        uint256 rate;
-        uint256 time;
-    }
-
-    struct Bid {
-        uint256 id;
-        address borrower;
-        uint256 amount;
-        uint256 rate;
-        uint256 time;
-    }
-
-    struct Loan {
-        uint256 id;
-        address lender;
-        address borrower;
-        address token;
-        uint256 term;
-        uint256 amount;
-        uint256 rate;
-        uint256 startDate;
-        uint256 endDate;
-        uint256 repaymentAmount;
-    }
-
     uint256 loanId;
-
-    error CollateralAmountTooLittle();
-    error CollateralAmountIsZero();
-    error NoActiveAsks();
-    error InsufficientDepth();
-    error TransferFailed();
-    error RateOutOfBounds();
 
     mapping(address => mapping(address => uint256)) public deposits;
     mapping(address => mapping(uint256 => Ask[])) public asks;
@@ -272,7 +240,10 @@ contract Orderbook {
     function repay() public {}
 
     // TODO:
-    function liquidate() public {}
+    function liquidate(address oracleAddress) public {
+        IChronicle chronicle = IChronicle(oracleAddress);
+        uint256 oraclePrice = chronicle.read();
+    }
 
     function getBids(
         address _token,
