@@ -6,6 +6,8 @@ import Head from "next/head";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { chains } from "@/constants/chains";
 import { WagmiConfig } from "wagmi";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 const App = ({ Component, pageProps }: AppProps) => {
   createWeb3Modal({ wagmiConfig, projectId, chains });
@@ -34,9 +36,11 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta property="og:description" content="" />
       </Head>
       <WagmiConfig config={wagmiConfig}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Provider store={store}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
       </WagmiConfig>
     </>
   );

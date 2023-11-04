@@ -1,3 +1,4 @@
+import Orderbook from '@/components/orderbook'
 import Panel from '@/components/panel'
 import { FC } from 'react'
 
@@ -8,6 +9,8 @@ const Home: FC = () => {
       <Panel />
 
     </div>
+    <Orderbook />
+
   </div>
 
   )

@@ -1,28 +1,28 @@
 export type Ask = {
-  id: BigInt
+  id: bigint
   lender: string
-  amount: BigInt
-  rate: BigInt
-  time: BigInt
+  amount: bigint
+  rate: bigint
+  time: bigint
 }
 
 export type Bid = {
-  id: BigInt
+  id: bigint
   borrower: string
-  amount: BigInt
-  rate: BigInt
-  time: BigInt
+  amount: bigint
+  rate: bigint
+  time: bigint
 }
 
 export type Loan = {
-  id: BigInt
+  id: bigint
   lender: string
   borrower: string
   token: string
-  term: BigInt
-  amount: BigInt
-  rate: BigInt
-  startDate: BigInt
-  endDate: BigInt
-  repaymentAmount: BigInt
+  term: bigint
+  amount: bigint
+  rate: bigint
+  startDate: bigint
+  endDate: bigint
+  repaymentAmount: bigint
 }
