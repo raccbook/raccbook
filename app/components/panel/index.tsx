@@ -12,6 +12,9 @@ import Meta from "./Meta";
 import { Bid, Ask } from "@/types/orders";
 import { durationState } from "@/redux/meta";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import Modal from "../common/modal";
+import Button from "../common/button";
 
 const Panel: FC = () => {
   const { address } = useAccount();
@@ -19,6 +22,9 @@ const Panel: FC = () => {
   const [mode, setMode] = useState<iModes>("borrow");
   const [type, setType] = useState<iTypes>("market");
   const [rate, setRate] = useState<number>(0);
+  const [tlidScore, setTlidScore] = useState<number>(0);
+  const [creditScore, setCreditScore] = useState<number>(0);
+  const [committed, setCommitted] = useState<boolean>(false);
   const [inputAmount, setInputAmount] = useState<number>(0);
 
   const [available, setAvailable] = useState<number>(0);
@@ -53,6 +59,10 @@ const Panel: FC = () => {
     {
       functionName: "getAsks",
       args: [TOKEN, period],
+    },
+    {
+      functionName: "creditScore",
+      args: [address!]
     },
   ]);
 
@@ -94,6 +104,13 @@ const Panel: FC = () => {
   const { write: writeMarketAsk, isSuccess: success3 } =
     useContractWrite(marketAskConfig);
 
+  const { config: setCreditScoreConfig } = usePrepareWrite("setCreditScore", [
+    tlidScore,
+  ]);
+
+  const { write: writeSetCreditScore, isSuccess: success4 } =
+    useContractWrite(setCreditScoreConfig);
+
   const transact = () => {
     switch (mode) {
       case "borrow":
@@ -109,6 +126,67 @@ const Panel: FC = () => {
   };
 
   useEffect(() => {
+    // if (!address) return;
+    // const run = async () => {
+    //   const query = `
+    //   {
+    //     users(where: {address: "${address?.toLowerCase()}"}) {
+    //       id
+    //     }
+    //   }
+    //   `;
+
+    //   const data = (
+    //     await axios.post(
+    //       "https://api.thegraph.com/subgraphs/name/talentlayer/talent-layer-mumbai",
+    //       { query }
+    //     )
+    //   ).data;
+
+    //   try {
+    //     const id = data.data.users[0].id;
+    //     if (!id) return console.error('Invalid id')
+
+    //     const query = `
+    //     {
+    //       user(id: "${id}") {
+    //         numReviews
+    //         rating
+    //       }
+    //     }
+    //     `
+
+    //     const idData = (
+    //       await axios.post(
+    //         "https://api.thegraph.com/subgraphs/name/talentlayer/talent-layer-mumbai",
+    //         { query }
+    //       )
+    //     ).data;
+
+    //     console.log(idData)
+
+    //   } catch (e) {
+    //     console.error("Couldnt detect a talent layer id!");
+    //   }
+    // };
+
+    // run();
+
+    const numReviews = 10;
+    const rating = 4.5;
+
+    if (address && !committed)
+      setTlidScore(Math.floor(((numReviews * rating) / 100) * 25));
+  }, [address]);
+
+  useEffect(() => {
+    if (success4) {
+      setCommitted(true);
+      setTlidScore(0)
+    }
+  }, [success4]);
+
+  useEffect(() => {
     if (!address) {
       setAvailable(0);
       setUserOpenBids([]);
@@ -119,8 +197,10 @@ const Panel: FC = () => {
     const deposits = data?.[0].result as BigInt | undefined;
     const bids = data?.[1].result as Bid[];
     const asks = data?.[2].result as Ask[];
+    const cs = data?.[3].result as bigint
 
     if (deposits) setAvailable(Number(deposits) / 10 ** 18);
+    if (cs) setCreditScore(Number(cs))
 
     const userOpenBid: Bid[] = [];
     const userOpenAsk: Ask[] = [];
@@ -146,6 +226,22 @@ const Panel: FC = () => {
   return (
     <div className="col-span-1 flex flex-col gap-3">
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
+        {tlidScore && !creditScore && (
+          <Modal title={"TLID Detected"} isOpen={true} closeModal={() => {}}>
+            <div className="flex flex-col gap-4">
+              <p className="opacity-80">
+                We've detected a valid talent layer id with a combined score of{" "}
+                <span className="font-bold">{tlidScore}</span>. Commit it
+                on-chain to get a better borrow limit!
+              </p>
+              <Button
+                title={"Commit"}
+                isActive
+                onClick={() => writeSetCreditScore?.()}
+              ></Button>
+            </div>
+          </Modal>
+        )}
         <Mode mode={mode} setMode={setMode} />
         <InputParams
           type={type}
@@ -168,6 +264,7 @@ const Panel: FC = () => {
           userOpenBids={userOpenBids}
           userOpenAsks={userOpenAsks}
           period={period}
+          creditScore={creditScore}
         />
       </div>
     </div>

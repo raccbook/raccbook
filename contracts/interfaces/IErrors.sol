@@ -16,4 +16,5 @@ interface IErrors {
     error InsufficentRepaymentAmount();
     error LoanDoesNotExist();
     error OnlyLoanBorrowerCanRepay();
+    error InsufficentReviews();
 }

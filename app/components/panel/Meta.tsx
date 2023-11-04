@@ -3,15 +3,17 @@ import { iPeriod } from '@/types'
 import { ethers } from 'ethers'
 import Image from 'next/image'
 import { FC, useMemo, useState } from 'react'
+import { spanish } from 'viem/accounts'
 
 interface Props {
   available: number
   userOpenBids: Bid[]
   userOpenAsks: Ask[]
   period: iPeriod
+  creditScore: number
 }
 
-const Meta: FC<Props> = ({ available, userOpenBids, userOpenAsks, period }) => {
+const Meta: FC<Props> = ({ available, userOpenBids, userOpenAsks, period, creditScore }) => {
   const [totalOpenBids, setTotalOpenBids] = useState(0)
   const [totalOpenAsks, setTotalOpenAsks] = useState(0)
 
@@ -58,7 +60,7 @@ const Meta: FC<Props> = ({ available, userOpenBids, userOpenAsks, period }) => {
             height={20}
           />
           {/* TODO: CHANGE LATER WITH CREDIT SCORE */}
-          <p>{available ? ((Number(available) * 85) / 100).toLocaleString() : '0.00'}</p>
+          <p>{available ? ((Number(available) * (85 + creditScore)) / 100).toLocaleString() : '0.00'} {creditScore && <span className='text-success'>(+{((Number(available) * (creditScore)) / 100).toLocaleString()})</span>}</p>
         </div>
       </div>
 
