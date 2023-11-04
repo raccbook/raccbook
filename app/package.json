@@ -12,8 +12,10 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@iexec/dataprotector": "0.2.0",
-    "@iexec/web3mail": "0.5.1",
+    "@iexec/dataprotector": "^0.3.0",
+    "@iexec/web3mail": "^0.5.1",
+    "ethers": "5.7.2",
+    "iexec": "8.4.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@web3modal/wagmi": "^3.2.0",
     "autoprefixer": "10.4.15",

@@ -12,6 +12,7 @@ interface Props {
 }
 const NotificationModal: FC<Props> = ({ isOpen, toggleModal }) => {
   const [mode, setMode] = useState<iModes>("borrow");
+  const [checked, setChecked] = useState(false)
 
   return (
     <Modal title="Notification Center" isOpen={isOpen} closeModal={toggleModal}>
@@ -39,8 +40,11 @@ const NotificationModal: FC<Props> = ({ isOpen, toggleModal }) => {
           than...
         </p>
         <Input placeholder="Input interest rate (%)" />
-
-        <Button title="Subscribe" isActive />
+        <div className="flex items-center gap-2">
+          <input type="checkbox" checked={checked} className="checkbox checkbox-primary" onChange={() => setChecked(!checked)} />
+          <p className="opacity-80 text-sm">I agree to pay a one time cost of 0.50$ to subscribe to this alert</p>
+        </div>
+        <Button title="Subscribe" isActive={checked} />
       </div>
     </Modal>
   );
