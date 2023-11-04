@@ -12,4 +12,5 @@ interface IErrors {
     error DepositAmountIsZero();
     error InsufficentTokenAllowance();
     error InsufficentTokenBalance();
+    error NoLiquidationPossible();
 }

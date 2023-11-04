@@ -261,11 +261,45 @@ contract Orderbook is IOrders, IErrors {
     // TODO:
     function repay() public {}
 
-    // TODO:
-    function liquidate(address oracleAddress) public {
-        IChronicle chronicle = IChronicle(oracleAddress);
+    function liquidate(
+        address _token,
+        uint256 _loanId,
+        address _oracleAddress
+    ) public {
+        IChronicle chronicle = IChronicle(_oracleAddress);
+        IERC20 token = IERC20(_token);
+
         uint256 oraclePrice = chronicle.read();
+        Loan storage loan = loans[_token][_loanId];
+
+        uint256 totalBorrowValue = loan.amount * oraclePrice;
+        uint256 totalCollateralValue = deposits[loan.borrower][_token] *
+            oraclePrice;
+
+        if ((totalCollateralValue * 100) / totalBorrowValue < LTV)
+            revert NoLiquidationPossible();
+
+        uint256 amountToLiquidate = (loan.amount * LTV) / 100;
+
+        require(
+            token.balanceOf(msg.sender) >= amountToLiquidate,
+            "Insufficient liquidation balance"
+        );
+
+        require(
+            token.transferFrom(msg.sender, address(this), amountToLiquidate),
+            "Token transfer failed"
+        );
+
+        deposits[loan.borrower][_token] -= amountToLiquidate;
+
+        require(
+            token.transfer(msg.sender, (amountToLiquidate * (100 - LTV)) / 100),
+            "Token transfer failed"
+        );
     }
+
+    function liquidateDemo() public {}
 
     function getBids(
         address _token,
