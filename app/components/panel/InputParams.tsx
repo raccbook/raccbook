@@ -29,7 +29,7 @@ const InputParams: FC<Props> = ({
           onChange={handleInputAmount}
         />
         <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-white opacity-60">
-          USDC
+          CORE
         </span>
       </div>
       <div
