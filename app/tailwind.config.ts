@@ -26,8 +26,8 @@ const config: Config = {
       {
         dark: {
           ...require('daisyui/src/theming/themes')['[data-theme=dark]'],
-          primary: '#00ADB5',
-          'primary-focus': '#5616C5',
+          primary: '#24a0ed',
+          'primary-focus': '#24a0ed',
           'primary-content': '#FFFFFF',
 
           secondary: '#D926A9',

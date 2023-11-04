@@ -1,12 +1,17 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BellIcon } from "@heroicons/react/24/outline";
+import Modal from "../common/modal";
+import Input from "../common/input";
+import Button from "../common/button";
+import NotificationModal from "./NotificationModal";
 
 const Header: FC = () => {
-  const notificationModal = () => {
-    console.log('notification')
-  }
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleModal = () => 
+    setIsOpen(!isOpen)
 
   return (
     <header className="py-10 mx-auto max-w-8xl">
@@ -16,10 +21,11 @@ const Header: FC = () => {
           <h1 className="font-bold">RaccBook</h1>
         </Link>
         <div className="flex items-center gap-4">
-          <div className="indicator animate-bounce cursor-pointer" onClick={notificationModal}>
+          <div className="indicator animate-bounce cursor-pointer" onClick={toggleModal}>
             <span className="indicator-item badge badge-sm badge-error"></span>
             <BellIcon className="h-6 w-6 " />
           </div>
+          <NotificationModal isOpen={isOpen} toggleModal={toggleModal} />
           <w3m-button balance="hide" />
         </div>
       </nav>

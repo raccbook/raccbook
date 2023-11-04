@@ -77,7 +77,7 @@ const Book: FC<Props> = ({ bids, asks }) => {
               return (
                 <div
                   className={`flex justify-between pr-6 py-3`}
-                  style={{ ...stripeGradient((index + 1) * 4, 'green') }}
+                  // style={{ ...stripeGradient((index + 1) * 4, 'green') }}
                   key={index}
                 >
                   <p>{formatEther(amount)}</p>
@@ -97,7 +97,7 @@ const Book: FC<Props> = ({ bids, asks }) => {
               return (
                 <div
                   className={`flex justify-between pl-6 py-3`}
-                  style={{ ...stripeGradient((index + 1) * 4, 'red') }}
+                  // style={{ ...stripeGradient((index + 1) * 4, 'red') }}
                   key={index}
                 >
                   <p className="text-[#F05A47]">
