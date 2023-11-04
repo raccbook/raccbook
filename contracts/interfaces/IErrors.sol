@@ -9,4 +9,7 @@ interface IErrors {
     error InsufficientDepth();
     error TransferFailed();
     error RateOutOfBounds();
+    error DepositAmountIsZero();
+    error InsufficentTokenAllowance();
+    error InsufficentTokenBalance();
 }

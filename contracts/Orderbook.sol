@@ -236,6 +236,28 @@ contract Orderbook is IOrders, IErrors {
         loanId += 1;
     }
 
+    function deposit(address _token, uint256 _amount) public {
+        if (_amount <= 0) revert DepositAmountIsZero();
+
+        IERC20 token = IERC20(_token);
+
+        uint256 allowance = token.allowance(msg.sender, address(this));
+        if (allowance < _amount) revert InsufficentTokenAllowance();
+
+        if (token.balanceOf(msg.sender) < _amount)
+            revert InsufficentTokenBalance();
+
+        bool isTransferred = token.transferFrom(
+            msg.sender,
+            address(this),
+            _amount
+        );
+
+        if (!isTransferred) revert TransferFailed();
+
+        deposits[msg.sender][_token] += _amount;
+    }
+
     // TODO:
     function repay() public {}
 
