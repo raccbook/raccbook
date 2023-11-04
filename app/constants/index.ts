@@ -6,7 +6,6 @@ export const CONTRACT_ABI = artifact.abi
 
 export const TOKEN = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
-
 export const CONTRACT = {
   address: CONTRACT_ADDRESS as `0x${string}`,
   abi: CONTRACT_ABI as Abi,

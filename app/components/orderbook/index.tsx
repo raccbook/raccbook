@@ -1,48 +1,48 @@
-import { CONTRACT, TOKEN } from '@/constants'
-import { durationState, setDuration } from '@/redux/meta'
-import { Ask, Bid } from '@/types/orders'
-import { iPeriod } from '@/types'
-import { FC, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useContractReads } from 'wagmi'
-import Book from './Book'
-import Header from './Header'
+import { CONTRACT, TOKEN } from "@/constants";
+import { durationState, setDuration } from "@/redux/meta";
+import { Ask, Bid } from "@/types/orders";
+import { iPeriod } from "@/types";
+import { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useContractReads } from "wagmi";
+import Book from "./Book";
+import Header from "./Header";
 
 const Orderbook: FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [period, setPeriod] = useState<iPeriod>(useSelector(durationState))
-  const [asks, setAsks] = useState<Ask[]>([])
-  const [bids, setBids] = useState<Bid[]>([])
+  const [period, setPeriod] = useState<iPeriod>(useSelector(durationState));
+  const [asks, setAsks] = useState<Ask[]>([]);
+  const [bids, setBids] = useState<Bid[]>([]);
 
   const { data } = useContractReads({
     contracts: [
       {
         ...CONTRACT,
-        functionName: 'getBids',
+        functionName: "getBids",
         args: [TOKEN, period],
       },
       {
         ...CONTRACT,
-        functionName: 'getAsks',
+        functionName: "getAsks",
         args: [TOKEN, period],
       },
     ],
     watch: true,
-  })
+  });
 
   useEffect(() => {
-    const bids = data?.[0].result
-    const asks = data?.[1].result
+    const bids = data?.[0].result;
+    const asks = data?.[1].result;
 
-    if (asks) setAsks(asks as Ask[])
-    if (bids) setBids(bids as Bid[])
-  }, [data])
+    if (asks) setAsks(asks as Ask[]);
+    if (bids) setBids(bids as Bid[]);
+  }, [data]);
 
   const handlePeriod = (period: iPeriod) => {
-    dispatch(setDuration(period))
-    setPeriod(period)
-  }
+    dispatch(setDuration(period));
+    setPeriod(period);
+  };
 
   return (
     <div className="lg:col-span-3">
@@ -55,7 +55,7 @@ const Orderbook: FC = () => {
         <Book asks={asks} bids={bids} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Orderbook
+export default Orderbook;

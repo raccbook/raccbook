@@ -25,7 +25,7 @@ const Panel: FC = () => {
   const [userOpenBids, setUserOpenBids] = useState<Bid[]>([]);
   const [userOpenAsks, setUserOpenAsks] = useState<Ask[]>([]);
 
-  const period = useSelector(durationState)
+  const period = useSelector(durationState);
 
   const handleInputAmount = (e: React.ChangeEvent<HTMLInputElement>) =>
     setInputAmount(Number(e.target.value));

@@ -2,6 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,11 +12,14 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@iexec/dataprotector": "0.2.0",
+    "@iexec/web3mail": "0.5.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@web3modal/wagmi": "^3.2.0",
     "autoprefixer": "10.4.15",
     "classnames": "^2.3.2",
     "framer-motion": "^10.16.4",
+    "graphql": "^16.8.1",
     "lodash.merge": "^4.6.2",
     "next": "13.5.1",
     "react": "18.2.0",
