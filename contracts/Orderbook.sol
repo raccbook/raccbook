@@ -398,4 +398,8 @@ contract Orderbook is IOrders, IErrors {
     function getAskIds(address _sender) public view returns (uint[] memory) {
         return askIds[_sender];
     }
+
+    function getLoanIds(address _sender) public view returns (uint[] memory) {
+        return loanIds[_sender];
+    }
 }

@@ -22,3 +22,5 @@ Don't miss out on these rates. If you have any questions or need more informatio
 
 Thanks for choosing us for your financial needs. We're here to support you every step of the way.
 `;
+
+export const EXPLORER_URL = 'https://zkevm.polygonscan.com/address/'

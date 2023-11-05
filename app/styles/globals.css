@@ -9,6 +9,22 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+th:first-child,
+td:first-child {
+  padding-left: 24px;
+}
+
+hr {
+  border: none;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+th {
+  color: white;
+  opacity: 0.6;
+  font-weight: normal;
+}
+
 /* REMOVE NUMBER UP/DOWN BUTTONS */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
