@@ -15,11 +15,11 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title></title>
-        <meta name="title" content="" />
+        <title>RaccBook</title>
+        <meta name="title" content="RaccBook" />
         <meta name="description" content="" />
         <meta charSet="UTF-8" />
-        <meta name="keywords" content="" />
+        <meta name="keywords" content="lending orderbook" />
         <meta
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes"
@@ -34,6 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta property="og:url" content="" />
         <meta property="og:title" content="" />
         <meta property="og:description" content="" />
+        <link rel="icon" type="image/svg" sizes="32x32" href="/favicon.svg" />
       </Head>
       <WagmiConfig config={wagmiConfig}>
         <Provider store={store}>

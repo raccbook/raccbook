@@ -12,7 +12,6 @@ import Meta from "./Meta";
 import { Bid, Ask } from "@/types/orders";
 import { durationState } from "@/redux/meta";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import Modal from "../common/modal";
 import Button from "../common/button";
 import { generateSuccess, throwNotification } from "@/utils/notification";
