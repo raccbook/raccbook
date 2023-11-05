@@ -8,6 +8,11 @@ import { useAccount, useContractWrite } from "wagmi";
 import { EMAIL_CONTENT, EMAIL_SUBJECT, TOKEN } from "@/constants";
 import { usePrepareWrite } from "@/hooks/usePrepareWrite";
 import { parseEther } from "viem";
+import {
+  generateError,
+  generateSuccess,
+  throwNotification,
+} from "@/utils/notification";
 
 interface Props {
   isOpen: boolean;
@@ -29,12 +34,22 @@ const NotificationModal: FC<Props> = ({ isOpen, toggleModal }) => {
   useEffect(() => {
     if (isSuccess) {
       fetch("/api/subscribe", {
-        method: "POST", 
-        body: JSON.stringify({ email, subject: EMAIL_SUBJECT, content: EMAIL_CONTENT }),
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          subject: EMAIL_SUBJECT,
+          content: EMAIL_CONTENT,
+        }),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
+      throwNotification(
+        generateSuccess("Successfully subscribed to this notification!")
+      );
+
+      toggleModal()
     }
   }, [isSuccess]);
 
