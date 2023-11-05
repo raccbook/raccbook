@@ -2,9 +2,6 @@ import { FC, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BellIcon } from "@heroicons/react/24/outline";
-import Modal from "../common/modal";
-import Input from "../common/input";
-import Button from "../common/button";
 import NotificationModal from "./NotificationModal";
 
 const Header: FC = () => {

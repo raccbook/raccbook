@@ -62,7 +62,7 @@ const Panel: FC = () => {
     },
     {
       functionName: "creditScore",
-      args: [address!]
+      args: [address!],
     },
   ]);
 
@@ -182,7 +182,7 @@ const Panel: FC = () => {
   useEffect(() => {
     if (success4) {
       setCommitted(true);
-      setTlidScore(0)
+      setTlidScore(0);
     }
   }, [success4]);
 
@@ -197,10 +197,10 @@ const Panel: FC = () => {
     const deposits = data?.[0].result as BigInt | undefined;
     const bids = data?.[1].result as Bid[];
     const asks = data?.[2].result as Ask[];
-    const cs = data?.[3].result as bigint
+    const cs = data?.[3].result as bigint;
 
     if (deposits) setAvailable(Number(deposits) / 10 ** 18);
-    if (cs) setCreditScore(Number(cs))
+    if (cs) setCreditScore(Number(cs));
 
     const userOpenBid: Bid[] = [];
     const userOpenAsk: Ask[] = [];
@@ -226,8 +226,15 @@ const Panel: FC = () => {
   return (
     <div className="col-span-1 flex flex-col gap-3">
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
-        {tlidScore && !creditScore && (
-          <Modal title={"TLID Detected"} isOpen={true} closeModal={() => {}}>
+        {tlidScore > 0 && !creditScore && (
+          <Modal
+            title={"TLID Detected"}
+            isOpen={true}
+            closeModal={() => {
+              setCommitted(true);
+              setTlidScore(0);
+            }}
+          >
             <div className="flex flex-col gap-4">
               <p className="opacity-80">
                 We've detected a valid talent layer id with a combined score of{" "}

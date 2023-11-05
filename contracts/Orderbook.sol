@@ -366,7 +366,15 @@ contract Orderbook is IOrders, IErrors {
     }
 
     function paySubscription(address _token) public {
-        deposits[msg.sender][_token] -= 2;
+        IERC20 token = IERC20(_token);
+
+        bool isTransferred = token.transferFrom(
+            msg.sender,
+            address(this),
+            5 ether
+        );
+
+        if (!isTransferred) revert TransferFailed();
     }
 
     function getBids(

@@ -48,8 +48,6 @@ const Meta: FC<Props> = ({ available, userOpenBids, userOpenAsks, period, credit
         </div>
       </div>
 
-      {/* TODO: ADD ENTRY FOR YOUR CREDIT SCORE */}
-
       <div className="flex items-center justify-between">
         <p className="text-white opacity-60">Borrow Limit</p>
         <div className="flex items-center gap-2">
@@ -59,8 +57,7 @@ const Meta: FC<Props> = ({ available, userOpenBids, userOpenAsks, period, credit
             width={20}
             height={20}
           />
-          {/* TODO: CHANGE LATER WITH CREDIT SCORE */}
-          <p>{available ? ((Number(available) * (85 + creditScore)) / 100).toLocaleString() : '0.00'} {creditScore && <span className='text-success'>(+{((Number(available) * (creditScore)) / 100).toLocaleString()})</span>}</p>
+          <p>{available ? ((Number(available) * (85 + creditScore)) / 100).toLocaleString() : '0.00'} {creditScore ? <span className='text-success'>(+{((Number(available) * (creditScore)) / 100).toLocaleString()})</span>: ''}</p>
         </div>
       </div>
 
