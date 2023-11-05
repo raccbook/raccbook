@@ -1,10 +1,10 @@
 import { enviroment } from '@/types/chains'
-import { hardhat, mainnet, sepolia } from 'wagmi/chains'
+import { hardhat, mainnet, polygonZkEvmTestnet, sepolia } from 'wagmi/chains'
 
 const chainConfig = {
   localhost: [hardhat],
-  testnet: [sepolia],
-  mainnet: [sepolia, mainnet],
+  testnet: [polygonZkEvmTestnet],
+  mainnet: [polygonZkEvmTestnet],
 }
 
 export const chains =

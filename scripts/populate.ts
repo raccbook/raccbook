@@ -12,8 +12,8 @@ task("populate", "Populate the orderbook")
     const contract = await viem.getContractAt("Orderbook", args.contract);
     const token = await viem.getContractAt("Token", args.token);
 
-    await token.write.approve([contract.address, parseEther("1000000")]);
-    await contract.write.deposit([args.token, parseEther("100000")]);
+    // await token.write.approve([contract.address, parseEther("1000000")]);
+    // await contract.write.deposit([args.token, parseEther("100000")]);
 
     for (let i = 0; i < asks; i++) {
       const amount = parseEther((Math.random() * 901 + 100).toFixed(2));
