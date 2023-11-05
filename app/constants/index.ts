@@ -1,10 +1,10 @@
 import { Abi } from "viem";
 import artifact from "./Orderbook.json";
 
-export const CONTRACT_ADDRESS = "0x016659ab1c80a167e7f8fb30c68101c314a43266";
+export const CONTRACT_ADDRESS = "0xeb7c2002f3bb0b756850d990bbac94c7636cc441";
 export const CONTRACT_ABI = artifact.abi;
 
-export const TOKEN = "0x2e2e026c8de98ebda430b3d903e701d4788710b6";
+export const TOKEN = "0xdb4e8aea2be902edc2bc615b829e199d7ae2b2db";
 
 export const CONTRACT = {
   address: CONTRACT_ADDRESS as `0x${string}`,

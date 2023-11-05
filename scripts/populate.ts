@@ -20,7 +20,7 @@ task("populate", "Populate the orderbook")
       const term = BigInt(
         termOptions[Math.floor(Math.random() * termOptions.length)]
       );
-      const rate = BigInt(Math.floor(Math.random() * 401 + 400));
+      const rate = BigInt(Math.floor(Math.random() * 401 + 800));
 
       await contract.write.limitAsk([token.address, amount, term, rate]);
     }
@@ -30,7 +30,7 @@ task("populate", "Populate the orderbook")
       const term = BigInt(
         termOptions[Math.floor(Math.random() * termOptions.length)]
       );
-      const rate = BigInt(Math.floor(Math.random() * 300 + 100));
+      const rate = BigInt(Math.floor(Math.random() * 400 + 400));
 
       await contract.write.limitBid([token.address, amount, term, rate]);
     }
