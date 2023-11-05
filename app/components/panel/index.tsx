@@ -258,6 +258,12 @@ const Panel: FC = () => {
           handleInputAmount={handleInputAmount}
           handleRate={handleRate}
         />
+        {mode === "lend" && (
+          <div className="flex items-center gap-2">
+            <input type="checkbox" className="checkbox checkbox-primary" />
+            <p className="opacity-80">Opt. in to under-collateralised loans.</p>
+          </div>
+        )}
         <button
           className={`flex items-center justify-center h-16 text-base-content ${
             mode === "borrow" ? "bg-success" : "bg-error"
