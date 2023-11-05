@@ -1,13 +1,19 @@
-# Sample Hardhat Project
+# RaccBook
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+The P2P Fixed Rate Lending Orderbook That Introduces A Layer Of Reputation Into The Lending Ecosystem.
 
-Try running some of the following tasks:
+## Run App
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+```sh
+$ cd app
+$ yarn
+$ yarn dev
+```
+
+## Deploy Contracts
+
+```sh
+$ yarn
+$ hh run scripts/deploy --network <NETWORK>
+$ hh populate --contract <CONTRACT> --token <TOKEN> --network <NETWORK>
 ```
