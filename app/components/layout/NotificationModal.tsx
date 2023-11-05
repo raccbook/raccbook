@@ -5,7 +5,7 @@ import Input from "../common/input";
 import Mode from "../panel/Mode";
 import { iModes } from "@/types";
 import { useAccount, useContractWrite } from "wagmi";
-import { TOKEN } from "@/constants";
+import { EMAIL_CONTENT, EMAIL_SUBJECT, TOKEN } from "@/constants";
 import { usePrepareWrite } from "@/hooks/usePrepareWrite";
 import { parseEther } from "viem";
 
@@ -30,7 +30,7 @@ const NotificationModal: FC<Props> = ({ isOpen, toggleModal }) => {
     if (isSuccess) {
       fetch("/api/subscribe", {
         method: "POST", 
-        body: JSON.stringify({ email, subject: "Notification: your targets are hit", content: "HIT" }),
+        body: JSON.stringify({ email, subject: EMAIL_SUBJECT, content: EMAIL_CONTENT }),
         headers: {
           "Content-Type": "application/json",
         },

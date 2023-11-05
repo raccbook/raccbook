@@ -226,10 +226,9 @@ const Panel: FC = () => {
   return (
     <div className="col-span-1 flex flex-col gap-3">
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
-        {tlidScore > 0 && !creditScore && (
           <Modal
             title={"TLID Detected"}
-            isOpen={true}
+            isOpen={!tlidScore}
             closeModal={() => {
               setCommitted(true);
               setTlidScore(0);
@@ -248,7 +247,6 @@ const Panel: FC = () => {
               ></Button>
             </div>
           </Modal>
-        )}
         <Mode mode={mode} setMode={setMode} />
         <InputParams
           type={type}
