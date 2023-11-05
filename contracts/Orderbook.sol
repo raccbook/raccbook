@@ -43,8 +43,10 @@ contract Orderbook is IOrders, IErrors {
 
     function marketBid(address _token, uint256 _amount, uint256 _term) public {
         if (deposits[msg.sender][_token] <= 0) revert CollateralAmountIsZero();
-        if (deposits[msg.sender][_token] < (_amount * 100) / (LTV + creditScore[msg.sender]))
-            revert CollateralAmountTooLittle();
+        if (
+            deposits[msg.sender][_token] <
+            (_amount * 100) / (LTV + creditScore[msg.sender])
+        ) revert CollateralAmountTooLittle();
 
         IERC20 token = IERC20(_token);
 
@@ -101,7 +103,9 @@ contract Orderbook is IOrders, IErrors {
 
         if (!isTransferred) revert TransferFailed();
 
-        deposits[msg.sender][_token] -= (_amount * 100) / (LTV + creditScore[msg.sender]);
+        deposits[msg.sender][_token] -=
+            (_amount * 100) /
+            (LTV + creditScore[msg.sender]);
 
         emit MarketBid({
             lender: lowestAsk.lender,
@@ -187,10 +191,14 @@ contract Orderbook is IOrders, IErrors {
         if (_rate <= 0 || _rate > 10000) revert RateOutOfBounds();
 
         if (deposits[msg.sender][_token] <= 0) revert CollateralAmountIsZero();
-        if (deposits[msg.sender][_token] < (_amount * 100) / (LTV + creditScore[msg.sender]))
-            revert CollateralAmountTooLittle();
+        if (
+            deposits[msg.sender][_token] <
+            (_amount * 100) / (LTV + creditScore[msg.sender])
+        ) revert CollateralAmountTooLittle();
 
-        deposits[msg.sender][_token] -= (_amount * 100) / (LTV + creditScore[msg.sender]);
+        deposits[msg.sender][_token] -=
+            (_amount * 100) /
+            (LTV + creditScore[msg.sender]);
 
         bids[_token][_term].push(
             Bid({
@@ -324,10 +332,13 @@ contract Orderbook is IOrders, IErrors {
         uint256 totalCollateralValue = deposits[loan.borrower][_token] *
             oraclePrice;
 
-        if ((totalCollateralValue * 100) / totalBorrowValue < (LTV + creditScore[msg.sender]))
-            revert NoLiquidationPossible();
+        if (
+            (totalCollateralValue * 100) / totalBorrowValue <
+            (LTV + creditScore[msg.sender])
+        ) revert NoLiquidationPossible();
 
-        uint256 amountToLiquidate = (loan.amount * (LTV + creditScore[msg.sender])) / 100;
+        uint256 amountToLiquidate = (loan.amount *
+            (LTV + creditScore[msg.sender])) / 100;
 
         require(
             token.balanceOf(msg.sender) >= amountToLiquidate,
@@ -350,10 +361,12 @@ contract Orderbook is IOrders, IErrors {
     // TODO: LIQUIDATE DEMO
     function liquidateDemo() public {}
 
-    function setCreditScore(
-        uint256 _score
-    ) public {
+    function setCreditScore(uint256 _score) public {
         creditScore[msg.sender] = _score;
+    }
+
+    function paySubscription(address _token) public {
+        deposits[msg.sender][_token] -= 2;
     }
 
     function getBids(
