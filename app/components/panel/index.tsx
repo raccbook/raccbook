@@ -246,7 +246,7 @@ const Panel: FC = () => {
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
         <Modal
           title={"TLID Detected"}
-          isOpen={!tlidScore}
+          isOpen={!committed}
           closeModal={() => {
             setCommitted(true);
             setTlidScore(0);
