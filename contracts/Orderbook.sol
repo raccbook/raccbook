@@ -358,8 +358,36 @@ contract Orderbook is IOrders, IErrors {
         );
     }
 
-    // TODO: LIQUIDATE DEMO
-    function liquidateDemo() public {}
+    function liquidateDemo(uint256 _id) public {
+        Loan memory loan = loans[msg.sender][_id];
+
+        if (loan.id != _id) revert LoanDoesNotExist();
+
+        delete loans[msg.sender][_id];
+        delete loans[loan.lender][_id];
+
+        uint[] storage borrowerLoanIds = loanIds[msg.sender];
+
+        for (uint256 i = 0; i < borrowerLoanIds.length; i++) {
+            if (borrowerLoanIds[i] == _id) {
+                borrowerLoanIds[i] = borrowerLoanIds[
+                    borrowerLoanIds.length - 1
+                ];
+                borrowerLoanIds.pop();
+                break;
+            }
+        }
+
+        uint[] storage lenderLoanIds = loanIds[loan.lender];
+
+        for (uint256 i = 0; i < lenderLoanIds.length; i++) {
+            if (lenderLoanIds[i] == _id) {
+                lenderLoanIds[i] = lenderLoanIds[lenderLoanIds.length - 1];
+                lenderLoanIds.pop();
+                break;
+            }
+        }
+    }
 
     function setCreditScore(uint256 _score) public {
         creditScore[msg.sender] = _score;
