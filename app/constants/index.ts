@@ -14,13 +14,7 @@ export const CONTRACT = {
 export const EMAIL_SUBJECT = "Your Interest Rate Bounds Have Been Triggered!";
 
 export const EMAIL_CONTENT = `
-Our lending interest rates are now within the range you've been waiting for.
-
-This is a great opportunity for you to consider borrowing or lending with us. Whether you need a loan or a place to put your money, we've got you covered.
-
-Don't miss out on these rates. If you have any questions or need more information, just reach out. We're here to help you make smart financial moves.
-
-Thanks for choosing us for your financial needs. We're here to support you every step of the way.
+Our lending interest rates are now within the range you've been waiting for. Don't miss out on these rates. If you have any questions or need more information, just reach out. We're here to help you make smart financial moves.
 `;
 
-export const EXPLORER_URL = 'https://zkevm.polygonscan.com/address/'
+export const EXPLORER_URL = "https://zkevm.polygonscan.com/address/";
