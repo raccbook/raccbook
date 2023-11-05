@@ -1,10 +1,10 @@
-import { CONTRACT, TOKEN } from "@/constants";
+import { getContract } from "@/constants";
 import { durationState, setDuration } from "@/redux/meta";
 import { Ask, Bid } from "@/types/orders";
 import { iPeriod } from "@/types";
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useContractReads } from "wagmi";
+import { useContractReads, useNetwork } from "wagmi";
 import Book from "./Book";
 import Header from "./Header";
 
@@ -15,17 +15,22 @@ const Orderbook: FC = () => {
   const [asks, setAsks] = useState<Ask[]>([]);
   const [bids, setBids] = useState<Bid[]>([]);
 
+  const { chain } = useNetwork();
+  const chainId = chain?.id;
+
   const { data } = useContractReads({
     contracts: [
       {
-        ...CONTRACT,
+        address: getContract(chainId!).address,
+        abi: getContract(chainId!).abi,
         functionName: "getBids",
-        args: [TOKEN, period],
+        args: [getContract(chainId!).token, period],
       },
       {
-        ...CONTRACT,
+        address: getContract(chainId!).address,
+        abi: getContract(chainId!).abi,
         functionName: "getAsks",
-        args: [TOKEN, period],
+        args: [getContract(chainId!).token, period],
       },
     ],
     watch: true,

@@ -5,16 +5,30 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.20",
+  solidity: {
+    compilers: [
+      {
+        version: "0.8.20",
+        settings: {
+          evmVersion: "paris",
+        },
+      },
+    ],
+  },
   networks: {
     zkevm: {
       url: `https://rpc.public.zkevm-test.net`,
       accounts: [process.env.ACCOUNT_PRIVATE_KEY ?? ""],
     },
+    coredao: {
+      url: "https://rpc.test.btcs.network",
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY ?? ""],
+      chainId: 1115,
+    },
   },
   etherscan: {
     apiKey: {
-      zkevm: process.env.ETHERSCAN_API ?? '',
+      zkevm: process.env.ETHERSCAN_API ?? "",
     },
     customChains: [
       {

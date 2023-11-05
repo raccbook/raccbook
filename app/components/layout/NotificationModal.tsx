@@ -4,10 +4,9 @@ import Modal from "../common/modal";
 import Input from "../common/input";
 import Mode from "../panel/Mode";
 import { iModes } from "@/types";
-import { useAccount, useContractWrite } from "wagmi";
-import { EMAIL_CONTENT, EMAIL_SUBJECT, TOKEN } from "@/constants";
+import { useAccount, useContractWrite, useNetwork } from "wagmi";
+import { EMAIL_CONTENT, EMAIL_SUBJECT, getContract } from "@/constants";
 import { usePrepareWrite } from "@/hooks/usePrepareWrite";
-import { parseEther } from "viem";
 import {
   generateError,
   generateSuccess,
@@ -23,8 +22,10 @@ const NotificationModal: FC<Props> = ({ isOpen, toggleModal }) => {
   const [checked, setChecked] = useState(false);
   const [email, setEmail] = useState<string>("");
 
+  const {chain} = useNetwork()
+  const chainId = chain?.id
   const { config: paySubscriptionConfig } = usePrepareWrite("paySubscription", [
-    TOKEN,
+    getContract(chainId!).token,
   ]);
 
   const { write: writePaySubscription, isSuccess } = useContractWrite(

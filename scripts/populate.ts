@@ -1,5 +1,6 @@
 import { task } from "hardhat/config";
-import { parseEther } from "viem";
+import { defineChain, parseEther } from "viem";
+
 
 task("populate", "Populate the orderbook")
   .addParam("contract", "Contract Address")

@@ -4,8 +4,7 @@ import InputParams from "./InputParams";
 import Mode from "./Mode";
 import { usePrepareWrite } from "@/hooks/usePrepareWrite";
 import { useReads } from "@/hooks/useReads";
-import { useAccount, useContractWrite } from "wagmi";
-import { TOKEN } from "@/constants";
+import { useAccount, useContractWrite, useNetwork } from "wagmi";
 import { parseEther } from "viem";
 import { iModes, iTypes } from "@/types";
 import Meta from "./Meta";
@@ -15,6 +14,7 @@ import { useSelector } from "react-redux";
 import Modal from "../common/modal";
 import Button from "../common/button";
 import { generateSuccess, throwNotification } from "@/utils/notification";
+import { getContract } from "@/constants";
 
 const Panel: FC = () => {
   const { address } = useAccount();
@@ -47,18 +47,21 @@ const Panel: FC = () => {
     setRate(Number(r.toFixed(2)));
   };
 
+  const { chain } = useNetwork();
+  const chainId = chain?.id;
+
   const { data } = useReads([
     {
       functionName: "deposits",
-      args: [address!, TOKEN],
+      args: [address!, getContract(chainId!).token],
     },
     {
       functionName: "getBids",
-      args: [TOKEN, period],
+      args: [getContract(chainId!).token, period],
     },
     {
       functionName: "getAsks",
-      args: [TOKEN, period],
+      args: [getContract(chainId!).token, period],
     },
     {
       functionName: "creditScore",
@@ -67,7 +70,7 @@ const Panel: FC = () => {
   ]);
 
   const { config: limitBidConfig } = usePrepareWrite("limitBid", [
-    TOKEN,
+    getContract(chainId!).token,
     parseEther(inputAmount.toString()).toString(),
     period,
     Math.round(rate * 100),
@@ -77,7 +80,7 @@ const Panel: FC = () => {
     useContractWrite(limitBidConfig);
 
   const { config: marketBidConfig } = usePrepareWrite("marketBid", [
-    TOKEN,
+    getContract(chainId!).token,
     parseEther(inputAmount.toString()).toString(),
     period,
   ]);
@@ -86,7 +89,7 @@ const Panel: FC = () => {
     useContractWrite(marketBidConfig);
 
   const { config: limitAskConfig } = usePrepareWrite("limitAsk", [
-    TOKEN,
+    getContract(chainId!).token,
     parseEther(inputAmount.toString()).toString(),
     period,
     Math.round(rate * 100),
@@ -96,7 +99,7 @@ const Panel: FC = () => {
     useContractWrite(limitAskConfig);
 
   const { config: marketAskConfig } = usePrepareWrite("marketAsk", [
-    TOKEN,
+    getContract(chainId!).token,
     parseEther(inputAmount.toString()).toString(),
     period,
   ]);
