@@ -4,7 +4,7 @@ import { Loan } from "@/types/orders";
 import { formatAddress, formatBasisPointRate } from "@/utils/format";
 import { getTimeAgo } from "@/utils/time";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { formatEther } from "viem";
 import { useContractWrite } from "wagmi";
 import { ClockIcon } from "@heroicons/react/24/outline";
@@ -15,15 +15,23 @@ interface Props {
 }
 
 const ActiveLoans: FC<Props> = ({ address, loans }) => {
+  const [id, setId] = useState<number>(0)
   const openLink = (url: string) => window.open(url, "_blank");
 
-  const { config: repayConfig } = usePrepareWrite("repay", [0]);
+  const { config: repayConfig } = usePrepareWrite("repay", [id]);
 
   const { write, isSuccess } = useContractWrite(repayConfig);
 
   const repay = async (id: bigint) => {
-    console.log(id);
+    setId(Number(id));
   };
+
+  useEffect(() => {
+    if (id) {
+      write?.()
+      setId(0)
+    }
+  }, [id])
 
   return (
     <table className="table-auto w-full">
@@ -42,7 +50,7 @@ const ActiveLoans: FC<Props> = ({ address, loans }) => {
       <tbody>
         {loans.map((loan) => {
           return (
-            <tr key={Number(loan.id)}>
+            <tr key={Math.random()}>
               <td className="py-2">{getTimeAgo(loan.startDate)}</td>
               <td className="py-2">{formatBasisPointRate(loan.rate)}%</td>
               <td className="py-2">{formatEther(loan.amount)}</td>
