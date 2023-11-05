@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Modal from "../common/modal";
 import Button from "../common/button";
+import { generateSuccess, throwNotification } from "@/utils/notification";
 
 const Panel: FC = () => {
   const { address } = useAccount();
@@ -223,30 +224,48 @@ const Panel: FC = () => {
     setUserOpenAsks(userOpenAsk);
   }, [address, data]);
 
+  useEffect(() => {
+    if (success0 || success1 || success2 || success3)
+      throwNotification(
+        generateSuccess(
+          `Successfully sent your ${
+            type === "limit" ? "limit" : "market"
+          } order!`
+        )
+      );
+  }, [success0, success1, success2, success3]);
+
+  useEffect(() => {
+    if (success4)
+      throwNotification(
+        generateSuccess(`Successfully committed your TalentLayer reputation!`)
+      );
+  }, [success4]);
+
   return (
     <div className="col-span-1 flex flex-col gap-3">
       <div className="flex flex-col gap-6 bg-white bg-opacity-5 rounded-2xl p-6">
-          <Modal
-            title={"TLID Detected"}
-            isOpen={!tlidScore}
-            closeModal={() => {
-              setCommitted(true);
-              setTlidScore(0);
-            }}
-          >
-            <div className="flex flex-col gap-4">
-              <p className="opacity-80">
-                We've detected a valid talent layer id with a combined score of{" "}
-                <span className="font-bold">{tlidScore}</span>. Commit it
-                on-chain to get a better borrow limit!
-              </p>
-              <Button
-                title={"Commit"}
-                isActive
-                onClick={() => writeSetCreditScore?.()}
-              ></Button>
-            </div>
-          </Modal>
+        <Modal
+          title={"TLID Detected"}
+          isOpen={!tlidScore}
+          closeModal={() => {
+            setCommitted(true);
+            setTlidScore(0);
+          }}
+        >
+          <div className="flex flex-col gap-4">
+            <p className="opacity-80">
+              We've detected a valid talent layer id with a combined score of{" "}
+              <span className="font-bold">{tlidScore}</span>. Commit it on-chain
+              to get a better borrow limit!
+            </p>
+            <Button
+              title={"Commit"}
+              isActive
+              onClick={() => writeSetCreditScore?.()}
+            ></Button>
+          </div>
+        </Modal>
         <Mode mode={mode} setMode={setMode} />
         <InputParams
           type={type}

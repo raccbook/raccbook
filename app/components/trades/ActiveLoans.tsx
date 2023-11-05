@@ -8,6 +8,7 @@ import { FC, useEffect, useState } from "react";
 import { formatEther } from "viem";
 import { useContractWrite } from "wagmi";
 import { ClockIcon } from "@heroicons/react/24/outline";
+import { throwNotification, generateSuccess } from "@/utils/notification";
 
 interface Props {
   address: string;
@@ -15,37 +16,50 @@ interface Props {
 }
 
 const ActiveLoans: FC<Props> = ({ address, loans }) => {
-  const [id, setId] = useState<number>(0)
-  const [liquidateId, setLiquidateId] = useState<number>(0)
+  const [id, setId] = useState<number>(0);
+  const [liquidateId, setLiquidateId] = useState<number>(0);
   const openLink = (url: string) => window.open(url, "_blank");
 
   const { config: repayConfig } = usePrepareWrite("repay", [id]);
-  const { config: liquidateConfig } = usePrepareWrite("liquidateDemo", [liquidateId]);
+  const { config: liquidateConfig } = usePrepareWrite("liquidateDemo", [
+    liquidateId,
+  ]);
 
   const { write, isSuccess } = useContractWrite(repayConfig);
-  const { write: writeLiquidate, isSuccess: isLiquidated } = useContractWrite(liquidateConfig);
+  const { write: writeLiquidate, isSuccess: isLiquidated } =
+    useContractWrite(liquidateConfig);
 
   const repay = (id: bigint) => {
     setId(Number(id));
   };
 
   const liquidate = (id: bigint) => {
-    setLiquidateId(Number(id))
-  }
+    setLiquidateId(Number(id));
+  };
 
   useEffect(() => {
     if (id) {
-      write?.()
-      setId(0)
+      write?.();
+      setId(0);
     }
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
     if (liquidateId) {
-      writeLiquidate?.()
-      setLiquidateId(0)
+      writeLiquidate?.();
+      setLiquidateId(0);
     }
-  }, [liquidateId])
+  }, [liquidateId]);
+
+  useEffect(() => {
+    if (isSuccess)
+      throwNotification(generateSuccess(`Successfully repaid your loan!`));
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isLiquidated)
+      throwNotification(generateSuccess(`Successfully liquidated the loan!`));
+  }, [isLiquidated]);
 
   return (
     <table className="table-auto w-full">
@@ -91,14 +105,16 @@ const ActiveLoans: FC<Props> = ({ address, loans }) => {
                   </button>
                 </td>
               ) : (
-                <td className="py-2"><td className="py-2">
-                <button
-                  className="px-2 py-1 bg-white bg-opacity-10 rounded-md"
-                  onClick={() => liquidate(loan.id)}
-                >
-                  Liquidate
-                </button>
-              </td></td>
+                <td className="py-2">
+                  <td className="py-2">
+                    <button
+                      className="px-2 py-1 bg-white bg-opacity-10 rounded-md"
+                      onClick={() => liquidate(loan.id)}
+                    >
+                      Liquidate
+                    </button>
+                  </td>
+                </td>
               )}
             </tr>
           );
